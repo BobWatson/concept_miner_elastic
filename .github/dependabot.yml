@@ -7,13 +7,7 @@ updates:
     reviewers:
       - "BobWatson"
     ignore:
-      - dependency-name: "./prodigy/prodigy-1.11.2-cp39-cp39-linux_x86_64.whl"
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "daily"
-    reviewers:
-      - "BobWatson"
+      - dependency-name: "*prodigy*"
   - package-ecosystem: "docker"
     directory: "/build/concept_miner_elastic/app"
     schedule:
