@@ -1,0 +1,40 @@
+# To ensure app dependencies are ported from your virtual environment/host machine into your container, run 'pip freeze > requirements.txt' in the terminal to overwrite this file
+blis
+catalogue
+certifi
+chardet
+charset-normalizer
+click
+cymem
+elasticsearch
+en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.1.0/en_core_web_lg-3.1.0-py3-none-any.whl
+idna
+Jinja2
+MarkupSafe
+murmurhash
+numpy
+packaging
+pathy
+pdftotext
+preshed
+pydantic
+pyparsing
+requests
+smart-open
+spacy==3.1.2
+spacy-legacy==3.0.8
+srsly
+thinc
+tqdm
+typer
+typing-extensions
+urllib3
+wasabi
+pyyaml
+psutil
+getkey
+flask
+flask_restful
+ansi2html
+pymitter
+./prodigy/prodigy-1.11.2-cp39-cp39-linux_x86_64.whl ; sys_platform == "linux"
