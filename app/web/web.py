@@ -106,11 +106,11 @@ def _run_prodigy():
         while prodigy_running:
             time.sleep(5)
             
-        print("Training...")
-        
         prodigy.db_out(output_dir=cfg['folders']['output'])
         
         if app_should_loop:
+            
+            print("Training...")
         
             prodigy.train(output_dir=cfg['folders']['output'])
         
@@ -158,3 +158,5 @@ def main():
     
     ee.emit("run_directory_watcher")
     ee.emit("prodigy_start")
+    
+    print("Ready.")
