@@ -35,7 +35,7 @@ class ElasticManager:
         return result
     
     @staticmethod
-    def build_jsonl(batch_size):
+    def build_jsonl(batch_size=1_000_000):
         
         query_seed = random.getrandbits(64)
         

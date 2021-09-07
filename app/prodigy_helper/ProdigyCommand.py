@@ -62,8 +62,11 @@ class ProdigyCommand ():
         self.annotate_thread = threading.Thread(target=self._annotate_manual,args=[output_file])
         self.annotate_thread.start()
         
-    def annotate_manual_stop(self):
+    def stop(self):
         self.event.set()
+        time.sleep(10)
+        if self.running is True:
+            os.system("killall prodigy")
         
     def _annotate_manual(self,output_file):
         self.running = True
@@ -77,10 +80,16 @@ class ProdigyCommand ():
         self.running = False
         
     def db_out(self,output_dir):
+        self.running = True
         self.prodigy_cmd(cmd="db-out",output_dir=output_dir,block=True)
+        self.running = False
         
     def train(self,output_dir):
+        self.running = True
         self.prodigy_cmd(cmd="train",output_dir=output_dir,block=True)
+        self.running = False
         
     def train_curve(self,output_dir):
+        self.running = True
         self.prodigy_cmd(cmd="train-curve",output_dir=output_dir,block=True)
+        self.running = False

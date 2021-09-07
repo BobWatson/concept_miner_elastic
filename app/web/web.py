@@ -6,9 +6,9 @@ from .control_api.eventReceiver import eventReceiver
 from conf import cfg
 import os
 from getkey import getkey
-import atexit
 import time
 import threading
+import atexit
 
 from ansi2html import Ansi2HTMLConverter
 
@@ -72,6 +72,7 @@ def stop_directory_watcher():
 
 prodigy_running = False
 app_should_loop = True
+can_halt = False
 
 prodigy = ProdigyCommand()
 
@@ -104,6 +105,8 @@ def _run_prodigy():
         
         while prodigy_running:
             time.sleep(5)
+            
+        print("Training...")
         
         prodigy.db_out(output_dir=cfg['folders']['output'])
         
@@ -113,32 +116,45 @@ def _run_prodigy():
         
             prodigy.train_curve(output_dir=cfg['folders']['output'])
         
+    print("Prodigy done.")
     ee.emit("prodigy_halted")
 
 @ee.on("prodigy_stop")
 def stop_prodigy():
     global prodigy_running
     
-    prodigy.annotate_manual_stop()
+    prodigy.stop()
     prodigy_running = False
 
 @ee.on("halt_app")
 def halt_app():
     global app_should_loop
+    global can_halt
     app_should_loop = False
     
     ee.emit("prodigy_stop")
     ee.emit("stop_directory_watcher")
     
+    while not can_halt:
+        time.sleep(5)
+    
 @ee.on("prodigy_halted")
 def _halt_app():
-    exit()
+    global can_halt
+    print ("Prodigy stopped. App can exit.")
+    can_halt = True
 
 @app.before_first_request
 def main():
+    global prodigy_running
+    global app_should_loop
+    global can_halt
     
-    print("Starting...")
+    prodigy_running = False
+    app_should_loop = True
+    can_halt = False
+    
+    atexit.register(ee.emit,'halt_app')
     
     ee.emit("run_directory_watcher")
-    
     ee.emit("prodigy_start")

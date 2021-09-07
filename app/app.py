@@ -1,7 +1,9 @@
 from web.web import app as web_app
+import os
 
 def main():
-    web_app.run("0.0.0.0")
+    os.environ['FLASK_ENV'] = "development"
+    web_app.run(host="0.0.0.0",debug=True)
 
 if __name__ == "__main__":
     main()
