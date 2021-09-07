@@ -1,0 +1,64 @@
+import spacy
+from datetime import datetime
+from hashlib import sha1
+from elastic.ElasticManager import ElasticManager
+import logging
+import re
+
+class contentProcessor:
+    def __init__(self) -> None:
+        self.nlp = spacy.load("en_core_web_lg")
+        self.em = ElasticManager()
+        self.expr = re.compile(r'[a-z]\b\s[a-z]',flags=re.IGNORECASE)
+    
+    def process(self, body: str, file, timestamp):
+
+        file_id = sha1(str(body).encode("utf-8")).hexdigest()
+        
+        logging.info(f"Reading {file} as id: {file_id}")
+        
+        if self.alreadyIngested(file_id) is True:
+            logging.info(f"Skipping {file} (id: {file_id}) that already exists in the database")
+            return
+        
+        created_time = datetime.fromtimestamp(timestamp)
+        
+        content = body.replace('\r\n',' ')
+        content = content.replace('\n',' ')
+        
+        doc = self.nlp(content)
+        doc_sents = [sent.text for sent in doc.sents]
+        
+        line_list = []
+                
+        for sent in doc_sents:
+            body = str(sent)
+            line = {}
+            line["body"] = {}
+            line["body"]["text"] = body
+            line["body"]["meta"] = {}
+            line["body"]["meta"]["source"] = str(file)
+            line["body"]["meta"]["source_hash"] = str(file_id)
+            line["body"]["meta"]["timestamp"] = str(created_time)
+            line["body"]["meta"]["id"] = str(sha1((str(file)+str(sent)).encode("utf-8")).hexdigest())
+            line["id"] = line["body"]["meta"]["id"]
+            if self.expr.search(body) and len(body) > 20:
+                line_list.append(line)
+            else:
+                logging.info(f"Skipping: {body}")
+        
+        logging.info(f"File {str(file)} read with id: {file_id}")
+        
+        for line in line_list:
+            self.em.add(line["body"], line["id"])
+            
+    def alreadyIngested(self,source_hash) -> bool:
+        query = {"size":1, "query" : { "bool": { "must": [
+                    {"match": {
+                        "meta.source_hash": f"{source_hash}"
+                    }}]
+                }}}
+        result = self.em.search(query)
+        hits = result["hits"]["total"]["value"]
+        
+        return hits > 0
