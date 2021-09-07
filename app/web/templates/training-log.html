@@ -46,11 +46,9 @@
         var curve_style = curveData.substr(curveData.search('<style type="text/css">')+23, curveData.search('</style>')-curveData.search('<style type="text/css">')-23);
         var curve_content = curveData.substr(curveData.search('<pre class="ansi2html-content">')+31, curveData.search('</pre>')-curveData.search('<pre class="ansi2html-content">')-31);
 
-        $("head").append('<style type="text/css">'+log_style+'\n'+curve_style+'</style>');
+        $("head").append('<style type="text/css">pre{white-space: pre-wrap;}\n'+log_style+'\n'+curve_style+'</style>');
         $("#log-data").html(log_content);
         $("#curve-data").html(curve_content);
-
-        curvedata
     </script>
 
   </body>

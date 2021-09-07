@@ -36,10 +36,10 @@ class ProdigyCommand ():
             prodigy_command = f"prodigy textcat.manual {cfg['prodigy']['dataset']} {kwargs['output_file']} --label {text_classes}"
             
         if cmd == "train":
-            prodigy_command = f"prodigy train {kwargs['output_dir']}/training --textcat-multilabel {cfg['prodigy']['dataset']} --base-model {kwargs['output_dir']}/training/model-best --label-stats"
+            prodigy_command = f"prodigy train {kwargs['output_dir']}/training --textcat-multilabel {cfg['prodigy']['dataset']} --base-model {kwargs['output_dir']}/training/{cfg['prodigy']['model']} --label-stats"
         
         if cmd == "train-curve":
-            prodigy_command = f"prodigy train-curve --textcat-multilabel {cfg['prodigy']['dataset']} --base-model {kwargs['output_dir']}/training/model-best"
+            prodigy_command = f"prodigy train-curve --textcat-multilabel {cfg['prodigy']['dataset']} --base-model {kwargs['output_dir']}/training/{cfg['prodigy']['model']}"
 
         if cmd == "db-out":
             prodigy_command = f"prodigy db-out {cfg['prodigy']['dataset']} {kwargs['output_dir']}/annotations"
