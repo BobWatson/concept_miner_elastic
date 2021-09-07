@@ -34,17 +34,16 @@
                 <td>...</td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="prodigy_stop()">Go</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy_stop')">Go</button>
                   </div>                          
                 </td>
               </tr>
               <tr>
-                <th scope="row">Refreshing Elastic</th>
+                <th scope="row">Halt app</th>
                 <td>...</td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary">Start</button>
-                    <button type="button" class="btn btn-outline-primary">Stop</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="send_event('halt_app')">Go</button>
                   </div>       
                 </td>
               </tr>
@@ -59,8 +58,8 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 
     <script>
-      function prodigy_stop () {
-        $.post("/event/prodigy_stop", function(data){
+      function send_event (event_id) {
+        $.post("/event/"+event_id, function(data){
           console.log(data)
         });
       }

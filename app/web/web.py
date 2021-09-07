@@ -101,14 +101,17 @@ def _run_prodigy():
         
         prodigy_running = True
         prodigy.annotate_manual(output_file=output_file)
+        
         while prodigy_running:
             time.sleep(5)
-            
+        
         prodigy.db_out(output_dir=cfg['folders']['output'])
         
-        prodigy.train(output_dir=cfg['folders']['output'])
+        if app_should_loop:
         
-        prodigy.train_curve(output_dir=cfg['folders']['output'])
+            prodigy.train(output_dir=cfg['folders']['output'])
+        
+            prodigy.train_curve(output_dir=cfg['folders']['output'])
         
     ee.emit("prodigy_halted")
 
@@ -122,9 +125,10 @@ def stop_prodigy():
 @ee.on("halt_app")
 def halt_app():
     global app_should_loop
+    app_should_loop = False
+    
     ee.emit("prodigy_stop")
     ee.emit("stop_directory_watcher")
-    app_should_loop = False
     
 @ee.on("prodigy_halted")
 def _halt_app():
