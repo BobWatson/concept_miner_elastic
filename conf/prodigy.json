@@ -19,7 +19,7 @@
     "instant_submit": false,
     "feed_overlap": false,
     "auto_count_stream": false,
-    "total_examples_target": 0,
+    "total_examples_target": 3600,
     "ui_lang": "en",
     "project_info": ["dataset", "session", "lang", "recipe_name", "view_id", "label"],
     "show_stats": true,

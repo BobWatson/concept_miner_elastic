@@ -25,6 +25,8 @@ class contentProcessor:
         
         content = body.replace('\r\n',' ')
         content = content.replace('\n',' ')
+        content = content.encode("ascii", "ignore")
+        content = content.decode()
         
         doc = self.nlp(content)
         doc_sents = [sent.text for sent in doc.sents]

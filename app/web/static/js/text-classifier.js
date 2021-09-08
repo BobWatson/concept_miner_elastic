@@ -1,3 +1,24 @@
+const randomStr = (length = 16) => {
+    return Math.random().toString(16).substr(2, length);
+};
+
+const getCookie = (name) => {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let c = cookies[i].trim().split('=');
+        if (c[0] === name) {
+            return c[1];
+        }
+    }
+    return "";
+}
+
+if (getCookie("p_session") == "") {
+    document.cookie = "p_session="+randomStr();
+}
+
+var prodigy_session_id = getCookie("p_session")
+
 if ($(location).attr('hash') == "") {
     window.location.hash = "home";
 }
@@ -20,7 +41,7 @@ function navigateToFrame() {
             break;
         case "#prodigy":
             name = "Model Training"
-            loc = "/prodigy/";
+            loc = "/prodigy/?session="+getCookie("p_session");
             break;
         case "#training-log":
             name = "Training Log"
