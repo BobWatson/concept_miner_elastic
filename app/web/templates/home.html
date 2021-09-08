@@ -16,10 +16,10 @@
     <div class="container-fluid">
       <div class="row align-items-start">
         <div class="col">
-          Some Status Info
+          <iframe style="height:90vh;width:100%;" src="/kibana/app/dashboards#/view/cd9578d0-103c-11ec-a925-673c753f8f00?embed=true&_g=(filters%3A!()%2CrefreshInterval%3A(pause%3A!t%2Cvalue%3A0)%2Ctime%3A(from%3Anow-15m%2Cto%3Anow))"></iframe>
         </div>
-        <div class="col">
-          Controls
+        <div class="col-lg-3">
+          <h3>Controls</h3>
           <table class="table table-hover">
             <thead>
               <tr>
@@ -30,11 +30,11 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Start Training (Stop Prodigy)</th>
-                <td>...</td>
+                <th scope="row">Stop annotating (Start training)</th>
+                <td id="prodigy_status">...</td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy_stop')">Go</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy.stop')">Go</button>
                   </div>                          
                 </td>
               </tr>
@@ -43,11 +43,18 @@
                 <td>...</td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="send_event('halt_app')">Go</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="send_event('app.halt')">Go</button>
                   </div>       
                 </td>
               </tr>
           </table>
+          <h3>Upload</h3>
+          <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
+            <div class="form-group">
+              <input type="file" class="form-control-file" name="files" id="file-control" multiple="">
+              <button type="submit" class="btn btn-primary">Upload</button>
+            </div>
+          </form>
         </div>
       </div>    
     </div>    
@@ -58,11 +65,51 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 
     <script>
+
+      var prodigy_state = {"status": "..."}
+
       function send_event (event_id) {
         $.post("/event/"+event_id, function(data){
-          console.log(data)
+          
         });
       }
+
+      $(function() {
+        get_prodigy_state();
+    
+        function get_prodigy_state() {
+           $.getJSON("/event/prodigy", function(result){
+            prodigy_state = JSON.parse(result);
+           });
+
+           $("#prodigy_status").html(prodigy_state.status);
+
+           setTimeout(get_prodigy_state,5000);
+        }
+    });
+
+    $( "#upload-form" ).submit(function( event ) {
+      event.preventDefault();
+
+      $.ajax({
+        url: "/upload",
+        data: new FormData($("#upload-form")[0]),
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        success: function(data) {
+              var response = jQuery.parseJSON(data);
+              if(response.status == "success") {
+                  alert("Success!");
+              } else if(response.status == "failure") {
+                  alert(response.err);
+              }
+          }
+      });
+      
+
+    });    
+    
     </script>
 
   </body>

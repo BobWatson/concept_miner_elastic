@@ -36,9 +36,13 @@ function navigateToFrame() {
 }
 
 $(document).ready(function() {
-    navigateToFrame()    
+    navigateToFrame();
 });
 
 $(window).on('hashchange', function() {
-    navigateToFrame()
-});  
+    navigateToFrame();
+});
+
+$(".nav-link").click(function(){
+    navigateToFrame();
+})
