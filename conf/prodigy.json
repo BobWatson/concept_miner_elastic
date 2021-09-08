@@ -13,7 +13,7 @@
         "dbname": "prodigy",
         "user": "prodigy",
         "password": "prodigy",
-        "host": "db"
+        "host": "postgres"
       }
     },
     "validate": true,

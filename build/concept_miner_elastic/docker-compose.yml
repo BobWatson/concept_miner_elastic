@@ -16,8 +16,8 @@ services:
       - web
       - db
     depends_on:
-      - "elastic"
-      - "postgres"
+      - elastic
+      - postgres
     environment:
       - TZ=${TZ}
 
