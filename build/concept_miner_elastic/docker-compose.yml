@@ -16,6 +16,8 @@ services:
       - web
     depends_on:
       - "elastic"
+    environment:
+      - TZ=${TZ}
 
   web:
     image: nginx:latest

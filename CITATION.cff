@@ -1,0 +1,14 @@
+# YAML 1.2
+---
+abstract: "An Elastic-backed wrapper around Prodigy, Kibana and spaCy. Designed to allow a small group to quickly annotate data and iterate on a text classification machine learning model."
+authors: 
+  -
+    family-names: Watson
+    given-names: "Robert John"
+cff-version: "1.1.0"
+date-released: 2021-09-07
+license: MIT
+message: "If you use this software, please cite it using these metadata."
+repository-code: "https://github.com/BobWatson/concept_miner_elastic"
+title: "Concept Miner"
+...

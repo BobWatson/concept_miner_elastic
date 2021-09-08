@@ -51,8 +51,8 @@ def training_log():
     with open(os.path.abspath(f"{cfg['folders']['output']}/prodigy.train-curve.log"),"r") as f:
         curvedata = f.read()
         
-    html_log = conv.convert(logdata)
-    html_curve_log = conv.convert(curvedata)
+    html_log = conv.convert(logdata.replace("`","'"))
+    html_curve_log = conv.convert(curvedata.replace("`","'"))
     
     return render_template('training-log.html',logdata=html_log,curvedata=html_curve_log)
 
