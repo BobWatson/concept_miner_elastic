@@ -16,6 +16,7 @@ from ingestor.TextExtractor import TextExtractor
 from prodigy_helper.ProdigyCommand import ProdigyCommand
 from pymitter import EventEmitter
 from werkzeug.utils import secure_filename
+from pathlib import Path
 
 from .control_api.eventReceiver import eventReceiver
 
@@ -120,6 +121,7 @@ def _run_prodigy():
         time.sleep(5)
         
     prodigy.db_out(output_dir=cfg['folders']['output'])
+    ee.emit("prodigy.db_written")
     
     if app_should_loop:
         
@@ -158,6 +160,24 @@ def _halt_app():
     global can_halt
     print ("Prodigy stopped. App can exit.")
     can_halt = True
+    
+@ee.on("prodigy.db_written")
+def read_annotations_into_elastic():
+    em = ElasticManager(elastic_index=cfg["elastic"]["annotation_index"])
+    annotations_folder = cfg['folders']['output']+"/annotations"
+    fileList = [x for x in Path(annotations_folder).rglob('*.jsonl')]
+    for file_name in fileList:
+        file = open(file_name, 'r')
+        lines = file.readlines()
+        for line in lines:
+            line_dict = json.loads(line)
+            try:
+                id = line_dict["meta"]["id"]
+            except:
+                id = "<err>"
+                
+            em.add(line_dict, id)
+    
 
 @app.before_first_request
 def main():
