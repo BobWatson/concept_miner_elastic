@@ -4,6 +4,7 @@ data
 build/prodigy/*
 build/concept_miner_elastic/.env
 conf/app.conf
+conf/htpasswd.users
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

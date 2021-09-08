@@ -3,4 +3,4 @@
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 rm -rf ${SCRIPT_DIR}/output/*
-rm -rf ${SCRIPT_DIR}/data/prodigy.db
+rm -rf ${SCRIPT_DIR}/data/*

@@ -14,13 +14,15 @@ services:
     networks:
       - elastic
       - web
+      - db
     depends_on:
       - "elastic"
+      - "postgres"
     environment:
       - TZ=${TZ}
 
   web:
-    image: nginx:latest
+    image: nginx:1.21
     ports:
       - 8000:8000
     volumes:
@@ -31,18 +33,17 @@ services:
       - web
 
   elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
     volumes:
-      - es-data:/usr/share/elasticsearch/data
+      - ../../data/elastic:/usr/share/elasticsearch/data
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
     networks:
       - elastic
 
-
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.14.0
+    image: docker.elastic.co/kibana/kibana:7.14.1
     volumes:
       - ../../conf/kibana.yml:/usr/share/kibana/config/kibana.yml
     environment:
@@ -52,10 +53,18 @@ services:
       - elastic
       - web
 
+  postgres:
+    image: postgres:13
+    volumes:
+     - ../../data/postgres:/var/lib/postgresql/data
+    environment:
+     - POSTGRES_USER=prodigy
+     - POSTGRES_PASSWORD=prodigy
+    networks:
+     - db
+
+
 networks:
   elastic:
   web:
-  
-volumes:
-  es-data:
-    driver: local
+  db:
