@@ -12,7 +12,6 @@
     <script src="/static/js/jquery-3.6.0.min.js"></script>
   </head>
   <body>
-
     <div class="container-fluid">
       <div class="row align-items-start">
         <div class="col">
@@ -59,6 +58,7 @@
       </div>    
     </div>    
 
+
     <!-- end -->
 
     <script src="/static/js/bootstrap.bundle.min.js"></script>
@@ -101,6 +101,7 @@
               var response = jQuery.parseJSON(data);
               if(response.status == "success") {
                   alert("Success!");
+                  $("#upload-form")[0].reset();
               } else if(response.status == "failure") {
                   alert(response.err);
               }

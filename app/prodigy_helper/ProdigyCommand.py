@@ -64,8 +64,8 @@ class ProdigyCommand ():
         
     def stop(self):
         self.event.set()
-        time.sleep(10)
-        if self.running is True:
+        time.sleep(20)
+        if self.running is True and self.event.is_set():
             os.system("killall prodigy")
         
     def _annotate_manual(self,output_file):
