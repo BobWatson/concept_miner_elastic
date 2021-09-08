@@ -60,4 +60,7 @@ class ElasticManager:
                 break
             jsonl += json.dumps(result) + "\n"
             
+        jsonl = jsonl.encode("ascii","ignore")
+        jsonl = jsonl.decode()
+            
         return jsonl.strip()

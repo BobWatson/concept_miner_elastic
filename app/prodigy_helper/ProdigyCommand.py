@@ -31,15 +31,25 @@ class ProdigyCommand ():
         
         prodigy_env = os.environ.copy()
         
+        base_model = ""
+        
+        try:        
+            for model in cfg['prodigy']['model']:
+                model_path = kwargs['output_dir']+"/training/"+model
+                if os.path.exists(model_path):
+                    base_model = f"--base-model {model_path} "
+        except:
+            pass
+        
         if cmd == "annotate-manual":
             text_classes = ','.join("'{0}'".format(x) for x in cfg['learning_model']['labels'])
             prodigy_command = f"prodigy textcat.manual {cfg['prodigy']['dataset']} {kwargs['output_file']} --label {text_classes}"
             
         if cmd == "train":
-            prodigy_command = f"prodigy train {kwargs['output_dir']}/training --textcat-multilabel {cfg['prodigy']['dataset']} --base-model {kwargs['output_dir']}/training/{cfg['prodigy']['model']} --label-stats"
+            prodigy_command = f"prodigy train {kwargs['output_dir']}/training --textcat-multilabel {cfg['prodigy']['dataset']} {base_model}--label-stats"
         
         if cmd == "train-curve":
-            prodigy_command = f"prodigy train-curve --textcat-multilabel {cfg['prodigy']['dataset']} --base-model {kwargs['output_dir']}/training/{cfg['prodigy']['model']}"
+            prodigy_command = f"prodigy train-curve --textcat-multilabel {cfg['prodigy']['dataset']} {base_model}"
 
         if cmd == "db-out":
             prodigy_command = f"prodigy db-out {cfg['prodigy']['dataset']} {kwargs['output_dir']}/annotations"
