@@ -10,11 +10,20 @@ from conf import cfg
 class ElasticManager:
     def __init__(self, elastic_host=cfg['elastic']['host'], elastic_index=cfg['elastic']['ingestion_index']) -> None:
         
-        self.es = Elasticsearch(elastic_host)
+        self.es = Elasticsearch(elastic_host,timeout=60)
         self.elastic_index = elastic_index
         
         try:
-            self.es.indices.create(index=self.elastic_index)
+            body = {
+                "mappings": {
+                    "properties": {
+                        "meta.ents" : {
+                            "type":"nested"
+                        }
+                    }
+                }
+            }
+            self.es.indices.create(index=self.elastic_index, body=body)
             
         except RequestError as e:
             if e.args[0] != 400: # 400 is 'already exists'
@@ -29,6 +38,10 @@ class ElasticManager:
     
     def add(self, body, id):
         self.es.index(index=self.elastic_index,body=body, id=id)
+        
+    def update(self, body, id):
+        doc = {"doc": body}
+        self.es.update(index=self.elastic_index,body=doc, id=id)
         
     def search(self, query):
         result = self.es.search(index=self.elastic_index,body=query)

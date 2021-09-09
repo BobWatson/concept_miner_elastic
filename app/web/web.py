@@ -172,11 +172,15 @@ def read_annotations_into_elastic():
         for line in lines:
             line_dict = json.loads(line)
             try:
+                del line_dict["meta"]["ents"]
+            except:
+                pass
+            try:
                 id = line_dict["meta"]["id"]
             except:
                 id = "<err>"
                 
-            em.add(line_dict, id)
+            em.update(line_dict, id)
     
 
 @app.before_first_request

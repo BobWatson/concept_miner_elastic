@@ -4,11 +4,13 @@ from hashlib import sha1
 from elastic.ElasticManager import ElasticManager
 import logging
 import re
+from conf import cfg
 
 class contentProcessor:
     def __init__(self) -> None:
         self.nlp = spacy.load("en_core_web_lg")
         self.em = ElasticManager()
+        self.em_ents = ElasticManager(elastic_index=cfg['elastic']['ents_index'])
         self.expr = re.compile(r'[a-z]\b\s[a-z]',flags=re.IGNORECASE)
     
     def process(self, body: str, file, timestamp):
@@ -29,11 +31,12 @@ class contentProcessor:
         content = content.decode()
         
         doc = self.nlp(content)
-        doc_sents = [sent.text for sent in doc.sents]
+        docs = [sent for sent in doc.sents]
         
         line_list = []
                 
-        for sent in doc_sents:
+        for doc in docs:
+            sent = doc.text
             body = str(sent)
             line = {}
             line["body"] = {}
@@ -43,7 +46,18 @@ class contentProcessor:
             line["body"]["meta"]["source_hash"] = str(file_id)
             line["body"]["meta"]["timestamp"] = str(created_time)
             line["body"]["meta"]["id"] = str(sha1((str(file)+str(sent)).encode("utf-8")).hexdigest())
+            line["body"]["meta"]["ents"] = []
             line["id"] = line["body"]["meta"]["id"]
+            
+            for ent in doc.ents:
+                label_int = ent.label
+                label = ent.label_
+                text = ent.text
+
+                ent_body = {"ent.label_int": label_int, "ent.label": label, "ent.text": text}
+                
+                line["body"]["meta"]["ents"].append(ent_body)
+            
             if self.expr.search(body) and len(body) > 20:
                 line_list.append(line)
             else:
