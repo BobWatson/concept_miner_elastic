@@ -14,16 +14,7 @@ class ElasticManager:
         self.elastic_index = elastic_index
         
         try:
-            body = {
-                "mappings": {
-                    "properties": {
-                        "meta.ents" : {
-                            "type":"nested"
-                        }
-                    }
-                }
-            }
-            self.es.indices.create(index=self.elastic_index, body=body)
+            self.es.indices.create(index=self.elastic_index)
             
         except RequestError as e:
             if e.args[0] != 400: # 400 is 'already exists'

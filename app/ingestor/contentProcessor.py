@@ -46,17 +46,25 @@ class contentProcessor:
             line["body"]["meta"]["source_hash"] = str(file_id)
             line["body"]["meta"]["timestamp"] = str(created_time)
             line["body"]["meta"]["id"] = str(sha1((str(file)+str(sent)).encode("utf-8")).hexdigest())
-            line["body"]["meta"]["ents"] = []
+            line["body"]["meta"]["ents"] = {}
             line["id"] = line["body"]["meta"]["id"]
             
             for ent in doc.ents:
                 label_int = ent.label
                 label = ent.label_
                 text = ent.text
-
-                ent_body = {"ent.label_int": label_int, "ent.label": label, "ent.text": text}
                 
-                line["body"]["meta"]["ents"].append(ent_body)
+                try:
+                    if isinstance(line["body"]["meta"]["ents"][label], list) and isinstance(line["body"]["meta"]["ents"][label_int], list):
+                        line["body"]["meta"]["ents"][label].append(text)
+                        line["body"]["meta"]["ents"][label_int].append(text)
+                    else:
+                        line["body"]["meta"]["ents"][label] = [text]
+                        line["body"]["meta"]["ents"][label_int] = [text]
+                        
+                except:
+                    line["body"]["meta"]["ents"][label] = [text]
+                    line["body"]["meta"]["ents"][label_int] = [text]
             
             if self.expr.search(body) and len(body) > 20:
                 line_list.append(line)
