@@ -67,3 +67,7 @@ $(window).on('hashchange', function() {
 $(".nav-link").click(function(){
     navigateToFrame();
 })
+
+if (!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    $("#favicon").attr("href","/static/img/blur_lm.png");
+}
