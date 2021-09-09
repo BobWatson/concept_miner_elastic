@@ -181,7 +181,11 @@ def read_annotations_into_elastic():
                 id = "<err>"
                 
             em.update(line_dict, id)
-    
+
+@ee.on("prodigy.write_annotations_to_elastic")
+def write_annotations_to_elastic():
+    prodigy.db_out(output_dir=cfg['folders']['output'])
+    ee.emit("prodigy.db_written")
 
 @app.before_first_request
 def main():

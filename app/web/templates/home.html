@@ -29,17 +29,30 @@
             </thead>
             <tbody>
               <tr>
+                <th scope="row">Write Annotations to Elastic</th>
+                <td></td>
+                <td>
+                  <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy.write_annotations_to_elastic')">Go</button>
+
+                    
+                  </div>                          
+                </td>
+              </tr>
+              <tr>
                 <th scope="row">Stop annotating (Start training)</th>
                 <td id="prodigy_status">...</td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy.stop')">Go</button>
+
+                    
                   </div>                          
                 </td>
               </tr>
               <tr>
                 <th scope="row">Halt app</th>
-                <td>...</td>
+                <td></td>
                 <td>
                   <div class="btn-group btn-group-sm" role="group">
                     <button type="button" class="btn btn-outline-primary" onclick="send_event('app.halt')">Go</button>
