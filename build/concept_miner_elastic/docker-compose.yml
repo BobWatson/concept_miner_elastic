@@ -21,6 +21,7 @@ services:
     environment:
       - TZ=${TZ}
       - PRODIGY_KEY=${PRODIGY_KEY}
+      - DEBUG=${DEBUG}
 
   web:
     image: nginx:1.21
