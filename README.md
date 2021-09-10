@@ -4,13 +4,18 @@ A framework around prodigy to let end users start and stop the interface, trigge
 
 ## Installation
 
-1. Make sure you have an active [prodigy](https://prodi.gy/) license, and can run VS Code dev containers
-2. Place the repository files in a folder
-3. Download *prodigy-1.11.2-cp39-cp39-linux_x86_64.whl* from prodigy and place in the build/prodigy directory.
-4. Open the folder in VSCode and '[Reopen in Container](https://code.visualstudio.com/docs/remote/containers)'
-5. Create ./conf/app.conf from ./conf/app.dist.conf and update with your labels
-6. Once built, run 'python /workspace/app/app.py' from the container (or launch from VS Code)
-7. The server should now be running on http://127.0.0.1:8000/ (you can change this port in ./conf/nginx.conf)
+1. Make sure you have an active [prodigy](https://prodi.gy/) license
+2. Create a .env file in the build directory (or edit docker-compose.yml in that location), containing:
+
+    ```shell
+    COMPOSE_PROJECT_NAME=concept_miner_elastic
+    KIBANA_SERVER_PUBLICBASEURL=https://<your_base_url>/kibana
+    TZ=<your_timezone>
+    DEBUG=false
+    PRODIGY_KEY=<your_prodigy_key>
+    ```
+3. Run `docker compose up`
+8. The server should now be running on http://127.0.0.1:8000/ (you can change this port in ./conf/nginx.conf)
 
 ## Usage
 
