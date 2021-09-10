@@ -8,9 +8,9 @@ services:
     init: true
     volumes:
       # Update this to wherever you want VS Code to mount the folder of your project
-      - ../../:/workspace:cached
+      - ../../:/concept_miner:cached
+      - ../../.pip_cache:/home/concept_miner/.cache/pip
 
-    command: sleep infinity 
     networks:
       - elastic
       - web
@@ -20,6 +20,8 @@ services:
       - postgres
     environment:
       - TZ=${TZ}
+      - DEBUG=${DEBUG}
+      - PRODIGY_KEY=${PRODIGY_KEY}
 
   web:
     image: nginx:1.21
