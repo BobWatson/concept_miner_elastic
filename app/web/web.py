@@ -67,7 +67,7 @@ def upload_file():
     else:
         return json.dumps({"status": "failure"})
 
-## -- Done with routes -- ##
+## --- Done with routes --- ##
 
 dw = directoryWatcher(cfg['folders']['watch_folder'])
 
