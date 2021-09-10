@@ -44,14 +44,23 @@ class ElasticManager:
         query_seed = random.getrandbits(64)
         
         query = {
-                "function_score": {
-                    "functions": [
-                        {
-                        "random_score": {
-                            "seed": f"{query_seed}",
-                            "field": "_seq_no"
-                        }
-                        }]
+                    "function_score": {
+                        "query": {
+                            "bool": {
+                                "must_not": {
+                                    "exists": {
+                                        "field": "answer"
+                                    }
+                                }
+                            }
+                        },
+                        "functions": [{
+                            "random_score": {
+                                "seed": f"{query_seed}",
+                                "field": "_seq_no"
+                            }
+                        }],
+                        "boost_mode": "replace"
                     }
                 }
         
