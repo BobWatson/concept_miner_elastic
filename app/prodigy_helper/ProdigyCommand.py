@@ -28,6 +28,7 @@ class ProdigyCommand ():
         os.environ['PRODIGY_LOGGING'] = "basic"
         
         prodigy_output_file = open(os.path.abspath(f"{cfg['folders']['output']}/prodigy.{cmd}.log"),"w")
+        prodigy_err_file = open(os.path.abspath(f"{cfg['folders']['output']}/prodigy.{cmd}.err.log"),"w")
         
         prodigy_env = os.environ.copy()
         
@@ -54,7 +55,7 @@ class ProdigyCommand ():
         if cmd == "db-out":
             prodigy_command = f"prodigy db-out {cfg['prodigy']['dataset']} {kwargs['output_dir']}/annotations"
         
-        self.proc = subprocess.Popen(prodigy_command, env=prodigy_env, shell=True, stdout=prodigy_output_file, stderr=prodigy_output_file, preexec_fn=os.setpgrp)
+        self.proc = subprocess.Popen(prodigy_command, env=prodigy_env, shell=True, stdout=prodigy_output_file, stderr=prodigy_err_file, preexec_fn=os.setpgrp)
         
         logging.info(f"Prodigy ({cmd}) running as PID {self.proc.pid}")
         
