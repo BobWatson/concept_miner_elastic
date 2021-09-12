@@ -32,7 +32,10 @@ class ElasticManager:
         
     def update(self, body, id):
         doc = {"doc": body}
-        self.es.update(index=self.elastic_index,body=doc, id=id)
+        try:
+            self.es.update(index=self.elastic_index,body=doc, id=id)
+        except:
+            self.add(body=body, id=id)
         
     def search(self, query):
         result = self.es.search(index=self.elastic_index,body=query)
