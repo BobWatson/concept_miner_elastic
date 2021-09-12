@@ -8,7 +8,7 @@ from conf import cfg
 
 class contentProcessor:
     def __init__(self) -> None:
-        self.nlp = spacy.load("en_core_web_lg")
+        self.nlp = spacy.load("en_core_web_trf")
         self.em = ElasticManager()
         self.em_ents = ElasticManager(elastic_index=cfg['elastic']['ents_index'])
         self.expr = re.compile(r'[a-z]\b\s[a-z]',flags=re.IGNORECASE)

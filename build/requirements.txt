@@ -7,7 +7,7 @@ charset-normalizer==2.0.4
 click==7.1.2
 cymem==2.0.5
 elasticsearch==7.14.1
-en-core-web-lg @ https://github.com/explosion/spacy-models/releases/download/en_core_web_lg-3.1.0/en_core_web_lg-3.1.0-py3-none-any.whl
+en-core-web-trf @ https://github.com/explosion/spacy-models/releases/download/en_core_web_trf-3.1.0/en_core_web_trf-3.1.0-py3-none-any.whl
 idna==3.2
 Jinja2==3.0.1
 MarkupSafe==2.0.1

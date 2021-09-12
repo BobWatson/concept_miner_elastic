@@ -32,7 +32,7 @@ class ProdigyCommand ():
         
         prodigy_env = os.environ.copy()
         
-        base_model = "--base-model en_core_web_lg "
+        base_model = "--base-model en_core_web_trf "
         
         try:        
             for model in cfg['prodigy']['model']:

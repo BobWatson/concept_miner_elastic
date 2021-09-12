@@ -22,6 +22,7 @@ services:
       - TZ=${TZ}
       - PRODIGY_KEY=${PRODIGY_KEY}
       - DEBUG=${DEBUG}
+      - TOKENIZERS_PARALLELISM=false
 
   web:
     image: nginx:1.21
