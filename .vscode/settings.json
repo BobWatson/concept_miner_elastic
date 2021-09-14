@@ -1,5 +1,5 @@
 {
-    "python.analysis.extraPaths": [
-
-    ]
+    "python.analysis.extraPaths": [],
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "black"
 }
