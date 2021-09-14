@@ -14,6 +14,7 @@ fi
 
 if [ "${DEBUG}" = "true" ]
 then
+    pip3 --disable-pip-version-check install -r /tmp/build/requirements-dev.txt
     sleep infinity
 else
     /usr/local/bin/python ./app.py
