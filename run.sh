@@ -14,6 +14,7 @@ fi
 
 if [ "${DEBUG}" = "true" ]
 then
+    envsubst < ../build/requirements-dev.txt > /tmp/build/requirements-dev.txt
     pip3 --disable-pip-version-check install -r /tmp/build/requirements-dev.txt
     sleep infinity
 else
