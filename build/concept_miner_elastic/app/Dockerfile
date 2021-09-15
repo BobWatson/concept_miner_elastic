@@ -27,6 +27,7 @@ RUN adduser --gecos "" --disabled-password concept_miner && \
     echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers && \
     mkdir -p /concept_miner && \
     chown -R concept_miner /concept_miner && \
+    mkdir -p /home/concept_miner/.cache && \
     chown -R concept_miner /home/concept_miner/.cache
 
 USER concept_miner
