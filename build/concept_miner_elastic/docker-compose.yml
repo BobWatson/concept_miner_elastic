@@ -1,73 +1,80 @@
-version: '3.4'
+version: "3.4"
 
 services:
-  app:
-    build:
-      context: ../../
-      dockerfile: ./build/concept_miner_elastic/app/Dockerfile
-    init: true
-    volumes:
-      # Update this to wherever you want VS Code to mount the folder of your project
-      - ../../:/concept_miner:cached
-      - ../../.pip_cache:/home/concept_miner/.cache/pip
+    app:
+        build:
+            context: ../../
+            dockerfile: ./build/concept_miner_elastic/app/Dockerfile
+        init: true
+        volumes:
+            # Update this to wherever you want VS Code to mount the folder of your project
+            - ../../:/concept_miner:cached
+            - ../../.pip_cache:/home/concept_miner/.cache/pip
 
-    networks:
-      - elastic
-      - web
-      - db
-    depends_on:
-      - elastic
-      - postgres
-    environment:
-      - TZ=${TZ}
-      - PRODIGY_KEY=${PRODIGY_KEY}
-      - DEBUG=${DEBUG}
-      - TOKENIZERS_PARALLELISM=false
+        networks:
+            - elastic
+            - web
+            - db
+        depends_on:
+            - elastic
+            - postgres
+        environment:
+            - TZ=${TZ}
+            - PRODIGY_KEY=${PRODIGY_KEY}
+            - DEBUG=${DEBUG}
+            - TOKENIZERS_PARALLELISM=false
+        restart: "unless-stopped"
 
-  web:
-    image: nginx:1.21
-    ports:
-      - 8000:8000
-    volumes:
-      - ../../conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ../../conf/htpasswd.users:/etc/nginx/htpasswd.users:ro
-      - ../../app/web/static:/www/static:ro
-    networks:
-      - web
+    web:
+        image: nginx:1.21
+        ports:
+            - 8000:8000
+        volumes:
+            - ../../conf/nginx.conf:/etc/nginx/nginx.conf:ro
+            - ../../conf/htpasswd.users:/etc/nginx/htpasswd.users:ro
+            - ../../app/web/static:/www/static:ro
+        networks:
+            - web
+        depends_on:
+            - kibana
+            - app
+        restart: "unless-stopped"
 
-  elastic:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
-    volumes:
-      - ../../data/elastic:/usr/share/elasticsearch/data
-    environment:
-      - discovery.type=single-node
-      - xpack.security.enabled=false
-    networks:
-      - elastic
+    elastic:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
+        volumes:
+            - ../../data/elastic:/usr/share/elasticsearch/data
+        environment:
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+        networks:
+            - elastic
+        restart: "unless-stopped"
 
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.14.1
-    volumes:
-      - ../../conf/kibana.yml:/usr/share/kibana/config/kibana.yml
-    environment:
-      - ELASTICSEARCH_HOSTS=http://elastic:9200
-      - SERVER_PUBLICBASEURL=${KIBANA_SERVER_PUBLICBASEURL}
-    networks:
-      - elastic
-      - web
+    kibana:
+        image: docker.elastic.co/kibana/kibana:7.14.1
+        volumes:
+            - ../../conf/kibana.yml:/usr/share/kibana/config/kibana.yml
+        environment:
+            - ELASTICSEARCH_HOSTS=http://elastic:9200
+            - SERVER_PUBLICBASEURL=${KIBANA_SERVER_PUBLICBASEURL}
+        networks:
+            - elastic
+            - web
+        restart: "unless-stopped"
 
-  postgres:
-    image: postgres:13
-    volumes:
-     - ../../data/postgres:/var/lib/postgresql/data
-    environment:
-     - POSTGRES_USER=prodigy
-     - POSTGRES_PASSWORD=prodigy
-    networks:
-     - db
-
+    postgres:
+        image: postgres:13
+        volumes:
+            - ../../data/postgres:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_USER=prodigy
+            - POSTGRES_PASSWORD=prodigy
+        networks:
+            - db
+        restart: "unless-stopped"
 
 networks:
-  elastic:
-  web:
-  db:
+    elastic:
+    web:
+    db:
