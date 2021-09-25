@@ -54,10 +54,10 @@ class ProdigyCommand:
             prodigy_command = f"prodigy textcat.manual {cfg['prodigy']['dataset']} {kwargs['output_file']} --label {text_classes}"
 
         if cmd == "train":
-            prodigy_command = f"prodigy train {kwargs['output_dir']}/training --textcat-multilabel {cfg['prodigy']['dataset']} {base_model}--label-stats -g 0"
+            prodigy_command = f"prodigy train {kwargs['output_dir']}/training --textcat-multilabel {cfg['prodigy']['dataset']} {base_model}--label-stats"
 
         if cmd == "train-curve":
-            prodigy_command = f"prodigy train-curve --textcat-multilabel {cfg['prodigy']['dataset']} {base_model} -g 0"
+            prodigy_command = f"prodigy train-curve --textcat-multilabel {cfg['prodigy']['dataset']} {base_model}"
 
         if cmd == "db-out":
             prodigy_command = f"prodigy db-out {cfg['prodigy']['dataset']} {kwargs['output_dir']}/annotations"

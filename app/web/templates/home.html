@@ -1,130 +1,171 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Text Classifier</title>
+        <title>Text Classifier</title>
 
-    <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap core CSS -->
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
 
-    <script src="/static/js/jquery-3.6.0.min.js"></script>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row align-items-start">
-        <div class="col">
-          <iframe style="height:90vh;width:100%;" src="/kibana/app/dashboards#/view/19d554a0-10e1-11ec-b0d3-cd062f03adbb?embed=true&_g=(filters%3A!()%2CrefreshInterval%3A(pause%3A!f%2Cvalue%3A15000)%2Ctime%3A(from%3Anow-15m%2Cto%3Anow))"></iframe>
-        </div>
-        <div class="col-lg-3">
-          <h3>Controls</h3>
-          <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Job</th>
-                <th scope="col">Status</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Write Annotations to Elastic</th>
-                <td></td>
-                <td>
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy.write_annotations_to_elastic')">Go</button>
+        <script src="/static/js/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row align-items-start">
+                <div class="col">
+                    <iframe
+                        style="height: 90vh; width: 100%"
+                        src="/kibana/app/dashboards#/view/99594f70-1da1-11ec-a09c-a9e932a26992?embed=true&_g=(filters%3A!()%2CrefreshInterval%3A(pause%3A!f%2Cvalue%3A15000)%2Ctime%3A(from%3Anow-15m%2Cto%3Anow))"
+                    ></iframe>
+                </div>
+                <div class="col-lg-3">
+                    <h3>Controls</h3>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Job</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">
+                                    Write Annotations to Elastic
+                                </th>
+                                <td></td>
+                                <td>
+                                    <div
+                                        class="btn-group btn-group-sm"
+                                        role="group"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            onclick="send_event('prodigy.write_annotations_to_elastic')"
+                                        >
+                                            Go
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">
+                                    Stop annotating (Start training)
+                                </th>
+                                <td id="prodigy_status">...</td>
+                                <td>
+                                    <div
+                                        class="btn-group btn-group-sm"
+                                        role="group"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            onclick="send_event('prodigy.stop')"
+                                        >
+                                            Go
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Halt app</th>
+                                <td></td>
+                                <td>
+                                    <div
+                                        class="btn-group btn-group-sm"
+                                        role="group"
+                                    >
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-primary"
+                                            onclick="send_event('app.halt')"
+                                        >
+                                            Go
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                    
-                  </div>                          
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Stop annotating (Start training)</th>
-                <td id="prodigy_status">...</td>
-                <td>
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="send_event('prodigy.stop')">Go</button>
-
-                    
-                  </div>                          
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">Halt app</th>
-                <td></td>
-                <td>
-                  <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-outline-primary" onclick="send_event('app.halt')">Go</button>
-                  </div>       
-                </td>
-              </tr>
-          </table>
-          <h3>Upload</h3>
-          <form id="upload-form" enctype="multipart/form-data" method="POST" action="/upload">
-            <div class="form-group">
-              <input type="file" class="form-control-file" name="files" id="file-control" multiple="">
-              <button type="submit" class="btn btn-primary">Upload</button>
+                    <h3>Upload</h3>
+                    <form
+                        id="upload-form"
+                        enctype="multipart/form-data"
+                        method="POST"
+                        action="/upload"
+                    >
+                        <div class="form-group">
+                            <input
+                                type="file"
+                                class="form-control-file"
+                                name="files"
+                                id="file-control"
+                                multiple=""
+                            />
+                            <button type="submit" class="btn btn-primary">
+                                Upload
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-          </form>
         </div>
-      </div>    
-    </div>    
 
+        <!-- end -->
 
-    <!-- end -->
+        <script src="/static/js/bootstrap.bundle.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+            integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+            crossorigin="anonymous"
+        ></script>
 
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+        <script>
+            var prodigy_state = { status: "..." };
 
-    <script>
+            function send_event(event_id) {
+                $.post("/event/" + event_id, function (data) {});
+            }
 
-      var prodigy_state = {"status": "..."}
+            $(function () {
+                get_prodigy_state();
 
-      function send_event (event_id) {
-        $.post("/event/"+event_id, function(data){
-          
-        });
-      }
+                function get_prodigy_state() {
+                    $.getJSON("/event/prodigy", function (result) {
+                        prodigy_state = JSON.parse(result);
+                    });
 
-      $(function() {
-        get_prodigy_state();
-    
-        function get_prodigy_state() {
-           $.getJSON("/event/prodigy", function(result){
-            prodigy_state = JSON.parse(result);
-           });
+                    $("#prodigy_status").html(prodigy_state.status);
 
-           $("#prodigy_status").html(prodigy_state.status);
+                    setTimeout(get_prodigy_state, 5000);
+                }
+            });
 
-           setTimeout(get_prodigy_state,5000);
-        }
-    });
+            $("#upload-form").submit(function (event) {
+                event.preventDefault();
 
-    $( "#upload-form" ).submit(function( event ) {
-      event.preventDefault();
-
-      $.ajax({
-        url: "/upload",
-        data: new FormData($("#upload-form")[0]),
-        processData: false,
-        contentType: false,
-        type: 'POST',
-        success: function(data) {
-              var response = jQuery.parseJSON(data);
-              if(response.status == "success") {
-                  alert("Success!");
-                  $("#upload-form")[0].reset();
-              } else if(response.status == "failure") {
-                  alert(response.err);
-              }
-          }
-      });
-      
-
-    });    
-    
-    </script>
-
-  </body>
+                $.ajax({
+                    url: "/upload",
+                    data: new FormData($("#upload-form")[0]),
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (data) {
+                        var response = jQuery.parseJSON(data);
+                        if (response.status == "success") {
+                            alert("Success!");
+                            $("#upload-form")[0].reset();
+                        } else if (response.status == "failure") {
+                            alert(response.err);
+                        }
+                    },
+                });
+            });
+        </script>
+    </body>
 </html>

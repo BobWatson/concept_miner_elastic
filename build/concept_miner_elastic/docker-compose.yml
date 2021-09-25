@@ -28,9 +28,9 @@ services:
             resources:
                 reservations:
                     devices:
-                        - driver: nvidia
-                          count: 1
-                          capabilities: [gpu]
+                        - capabilities: [gpu]
+                          driver: nvidia
+                          device_ids: ["0"]
 
     web:
         image: nginx:1.21
@@ -57,6 +57,11 @@ services:
         networks:
             - elastic
         restart: "unless-stopped"
+        deploy:
+            resources:
+                limits:
+                    cpus: "1.00" # Use at most 50% of one CPU core
+                    memory: 16G # Use at most 50 MB of RAM
 
     kibana:
         image: docker.elastic.co/kibana/kibana:7.14.1

@@ -9,7 +9,6 @@ from conf import cfg
 
 class contentProcessor:
     def __init__(self) -> None:
-        spacy.prefer_gpu()
         self.nlp = spacy.load("en_core_web_trf")
         self.em = ElasticManager()
         self.em_ents = ElasticManager(elastic_index=cfg["elastic"]["ents_index"])

@@ -21,7 +21,7 @@ pydantic==1.8.2
 pyparsing==2.4.7
 requests==2.26.0
 smart-open==5.2.1
-spacy[cuda112,transformers,lookups]==3.1.2
+spacy==3.1.2
 spacy-legacy==3.0.8
 srsly==2.4.1
 thinc==8.0.9
